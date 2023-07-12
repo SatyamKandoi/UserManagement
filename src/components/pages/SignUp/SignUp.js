@@ -2,7 +2,7 @@ import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
-import TextField from '@mui/material/TextField';
+import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -12,7 +12,9 @@ import Container from "@mui/material/Container";
 import { useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
-import register from "../../endpoints/register";
+import register from "../../../endpoints/register";
+
+
 
 const defaultTheme = createTheme();
 
@@ -25,12 +27,9 @@ export default function SignUp() {
     password: "",
     confirmPassword: "",
   });
-
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     try {
-    
       if (formData.password === formData.confirmPassword) {
         const { confirmPassword, ...data } = formData;
         const response = await register(data);
@@ -73,11 +72,7 @@ export default function SignUp() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            sx={{ mt: 3 }}
-          >
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -90,7 +85,6 @@ export default function SignUp() {
                   onChange={(e) => handleChange(e)}
                   label="First Name"
                   autoFocus
-                  
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -140,7 +134,6 @@ export default function SignUp() {
                   onChange={(e) => handleChange(e)}
                   type="password"
                   id="cpassword"
-                  
                 />
               </Grid>
             </Grid>

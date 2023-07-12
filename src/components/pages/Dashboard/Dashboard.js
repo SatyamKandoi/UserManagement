@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 import { useContext } from "react";
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
+import { Link } from "react-router-dom";
 import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
@@ -14,17 +15,24 @@ import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import Table from "../assets/Table";
+import Table from "../../assets/Table";
 import Paper from "@mui/material/Paper";
 import ListItem from "@mui/material/ListItem";
+import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import MenuIcon from "@mui/icons-material/Menu";
+import BadgeIcon from '@mui/icons-material/Badge';
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
+import Person2Icon from '@mui/icons-material/Person2';
+import logout from "../../../endpoints/logout";
+import Greeting from "../../assets/Greeting";
+import { useDispatch } from "react-redux";
+import { setCurrentUser } from "../../../redux/employeeSlice";
 
 const drawerWidth = 240;
 
@@ -77,11 +85,21 @@ const defaultTheme = createTheme();
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const dispatch = useDispatch()
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
-
+  const Logout = async () => {
+    try {
+      const result = await logout();
+      dispatch(setCurrentUser(null))
+      console.log(result.data.message);
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: "flex" }}>
@@ -111,7 +129,12 @@ export default function Dashboard() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
+              <Link  className="link-styles"to="/dashboard">
+
               Dashboard
+              </Link>
+
+            
             </Typography>
 
             <Badge badgeContent={0} color="secondary">
@@ -123,6 +146,7 @@ export default function Dashboard() {
                     background: "grey",
                   },
                 }}
+                onClick={Logout}
               >
                 LogOut
               </Button>
@@ -163,7 +187,7 @@ export default function Dashboard() {
             disablePadding
             sx={{ display: "block" }}
             onClick={() => {
-              navigate("/dashboard");
+              navigate("/dashboard/stats");
             }}
           >
             <ListItemButton
@@ -180,10 +204,36 @@ export default function Dashboard() {
                   justifyContent: "center",
                 }}
               >
-                <DashboardIcon />
+                <QueryStatsIcon />
+              </ListItemIcon>
+              <ListItemText primary="Stats" sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
+          </ListItem>
+          <ListItem
+            disablePadding
+            sx={{ display: "block" }}
+            onClick={() => {
+              navigate("/dashboard/employees");
+            }}
+          >
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? "initial" : "center",
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : "auto",
+                  justifyContent: "center",
+                }}
+              >
+                <BadgeIcon />
               </ListItemIcon>
               <ListItemText
-                primary="Dashboard"
+                primary="Employees"
                 sx={{ opacity: open ? 1 : 0 }}
               />
             </ListItemButton>
@@ -192,7 +242,7 @@ export default function Dashboard() {
             disablePadding
             sx={{ display: "block" }}
             onClick={() => {
-              navigate("/dashboard");
+              navigate("/dashboard/update");
             }}
           >
             <ListItemButton
@@ -209,17 +259,12 @@ export default function Dashboard() {
                   justifyContent: "center",
                 }}
               >
-                <DashboardIcon />
+                <Person2Icon/>
               </ListItemIcon>
-              <ListItemText
-                primary="Employees"
-                sx={{ opacity: open ? 1 : 0 }}
-              />
+              <ListItemText primary="Update Profile" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
-            
           </ListItem>
         </Drawer>
-
         <Box
           component="main"
           sx={{
@@ -232,8 +277,9 @@ export default function Dashboard() {
             overflow: "auto",
           }}
         >
-          <Toolbar />
-          <Table></Table>
+          <div style={{marginTop:100}}>
+          <Outlet />
+          </div>
         </Box>
       </Box>
     </ThemeProvider>

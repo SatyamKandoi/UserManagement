@@ -8,55 +8,23 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useEffect } from "react";
 import { useState } from "react";
-import getEmployees from "../../endpoints/getEmployees";
 import { Button } from "@mui/material";
-
-// const rows = [
-//   createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-//   createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-//   createData("Eclair", 262, 16.0, 24, 6.0),
-//   createData("Cupcake", 305, 3.7, 67, 4.3),
-//   createData("Gingerbread", 356, 16.0, 49, 3.9),
-// ];
+import {
+  getAllRTKEmployees,
+  useGetAllRTKEmployeesQuery,
+} from "../../services/employee";
 
 export default function BasicTable() {
-  const [allEmployees, setAllEmployees] = useState({});
+  const [rows, setRows] = useState([]);
+  const responseInfo = useGetAllRTKEmployeesQuery();
+  console.log(responseInfo);
+  const data = responseInfo?.currentData?.data;
+  console.log(data);
   useEffect(() => {
-    getEmployees(setAllEmployees);
-  }, []);
-
-  //     const rows = [   {
-  //         "id": 1,
-  //         "firstName": "Satyam",
-  //         "lastName": "kandoi",
-  //         "email": "satyam@gmail.com",
-  //         "password": "satyam",
-  //         "dob": "2023-07-05T00:00:00.000Z",
-  //         "doj": "2023-07-05T00:00:00.000Z",
-  //         "gender": "Male",
-  //         "phone": 12,
-  //         "deptId": 3,
-  //         "wstId": 1,
-  //         "roleId": 2,
-  //         "createdAt": "2023-07-05T00:00:00.000Z",
-  //         "updatedAt": "2023-07-07T07:30:51.000Z",
-  //         "workStatus": {
-  //             "id": 1,
-  //             "workState": "WFO",
-  //             "createdAt": "2023-07-05T08:40:16.000Z",
-  //             "updatedAt": "2023-07-05T08:40:16.000Z"
-  //         },
-  //         "department": {
-  //             "id": 3,
-  //             "departmentName": "IT",
-  //             "createdAt": "2023-07-05T08:40:16.000Z",
-  //             "updatedAt": "2023-07-05T08:40:16.000Z"
-  //         },
-
-  //     },
-  //    ]
-
-  const rows = allEmployees?.Employees?.data;
+    if (data) {
+      setRows(data);
+    }
+  }, [data]);
 
   return (
     <TableContainer
@@ -99,7 +67,7 @@ export default function BasicTable() {
               <TableCell align="right">{row.wstId}</TableCell>
               <TableCell align="right">{row.roleId}</TableCell>
               <TableCell align="right">
-                <Button  key={row.id}>Edit</Button>
+                <Button key={row.id}>Edit</Button>
               </TableCell>
               <TableCell align="right">
                 <Button key={row.id}>Delete</Button>

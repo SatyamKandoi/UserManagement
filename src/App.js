@@ -1,10 +1,13 @@
 import React from "react";
-import SignUp from "./components/SignUp/SignUp";
-import SignIn from "./components/SignIn/SignIn";
+import SignUp from "./components/pages/SignUp/SignUp";
+import SignIn from "./components/pages/SignIn/SignIn";
 import { useRoutes } from "react-router-dom";
-import Dashboard from "./components/Dashboard/Dashboard";
-import { RequireAuth } from "./hooks/auth";
-
+import Dashboard from "./components/pages/Dashboard/Dashboard";
+import Update from "./components/pages/UpdateProfile/Update";
+import Stats from "./components/pages/Stats/Stats";
+import Greeting from "./components/assets/Greeting";
+import { RequireAuth } from "./redux/requireAuth";
+import Employees from "./components/pages/Employees/Employees";
 const App = () => {
   const routes = useRoutes([
     {
@@ -12,13 +15,33 @@ const App = () => {
       element: <SignUp />,
     },
     {
-      path: "/signIn",
+      path: "/",
       element: <SignIn />,
     },
     {
-      path:"/dashboard",
-      element:<Dashboard/>
-    }
+      path: "/dashboard",
+
+      element: <RequireAuth><Dashboard/></RequireAuth>,
+      children: [
+        {
+          index: true,
+          element: <Greeting />,
+        },
+        {
+          path:"/dashboard/stats",
+          element:<Stats/>
+        },
+        {
+          path:"/dashboard/update",
+          element:<Update/>
+        },
+        {
+          path: "/dashboard/employees",
+          element: <Employees />,
+        },
+      ],
+    },
+
     // {
     //   path:"/home",
     //   element:<RequireAuth><Home/></RequireAuth>,
@@ -31,7 +54,7 @@ const App = () => {
     //       path: '/profile',
     //       element: <RequireAuth><Profile /></RequireAuth>
     //     },
-        
+
     //   ]
     // }
   ]);
