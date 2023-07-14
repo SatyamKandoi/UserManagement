@@ -6,13 +6,10 @@ import { getAllRTKEmployees } from "../services/employee";
 export const store = configureStore({
   reducer: {
     [getAllRTKEmployees.reducerPath]: getAllRTKEmployees.reducer,
-    Employee:employeeSlice,
-    setDept:employeeSlice,
-    work:employeeSlice
-
-
+    Employee: employeeSlice,
   },
-  middleware:(getDefaultMiddleware)=>getDefaultMiddleware().concat(getAllRTKEmployees.middleware)
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(getAllRTKEmployees.middleware),
 });
 
-setupListeners(store.dispatch)
+setupListeners(store.dispatch);

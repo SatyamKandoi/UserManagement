@@ -13,17 +13,16 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import login from "../../../endpoints/login";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setCurrentUser, setDept ,setWork} from "../../../redux/employeeSlice";
-
-// TODO remove, this demo shouldn't need to reset the theme.
+import { setCurrentUser, setDept, setWork } from "../../../redux/employeeSlice";
+import { useGetloginMutation } from "../../../services/employee"; // TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const dispatch = useDispatch()
+  const [loginnew, responseInfo] = useGetloginMutation();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [FormData, setFormData] = useState({ email: "", password: "" });
 
@@ -37,11 +36,10 @@ export default function SignIn() {
     event.preventDefault();
     try {
       const { ...data } = FormData;
-      const response = await login(data);
-      console.log(response.data.employee)
-      dispatch(setCurrentUser(response.data.employee))
-      dispatch(setDept(response.data.department))
-      dispatch(setWork(response.data.wrkSts))
+      const response = await loginnew(data);
+      dispatch(setCurrentUser(response?.data?.employee));
+      dispatch(setDept(response?.data?.department));
+      dispatch(setWork(response?.data?.wrkSts));
       setFormData({
         email: "",
         password: "",

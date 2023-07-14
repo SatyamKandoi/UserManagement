@@ -7,32 +7,24 @@ import { useContext } from "react";
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import { Link } from "react-router-dom";
-import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import { Button } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
-import Table from "../../assets/Table";
-import Paper from "@mui/material/Paper";
 import ListItem from "@mui/material/ListItem";
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import DashboardIcon from "@mui/icons-material/Dashboard";
 import MenuIcon from "@mui/icons-material/Menu";
 import BadgeIcon from '@mui/icons-material/Badge';
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import { Outlet, useNavigate } from "react-router-dom";
 import Person2Icon from '@mui/icons-material/Person2';
-import logout from "../../../endpoints/logout";
-import Greeting from "../../assets/Greeting";
 import { useDispatch } from "react-redux";
 import { setCurrentUser } from "../../../redux/employeeSlice";
+import { useLogoutMutation } from "../../../services/employee";
 
 const drawerWidth = 240;
 
@@ -85,6 +77,7 @@ const defaultTheme = createTheme();
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const [logoutnew] = useLogoutMutation();
   const dispatch = useDispatch()
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
@@ -92,10 +85,10 @@ export default function Dashboard() {
   };
   const Logout = async () => {
     try {
-      const result = await logout();
+      const result = await logoutnew();
+      console.log(result)
       dispatch(setCurrentUser(null))
-      console.log(result.data.message);
-      navigate("/");
+      navigate("/signin");
     } catch (error) {
       console.log(error);
     }
@@ -147,6 +140,7 @@ export default function Dashboard() {
                   },
                 }}
                 onClick={Logout}
+
               >
                 LogOut
               </Button>

@@ -13,12 +13,13 @@ import { useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import register from "../../../endpoints/register";
-
-
+import { useGetregisterMutation } from "../../../services/employee";
 
 const defaultTheme = createTheme();
 
 export default function SignUp() {
+  const [registernew] = useGetregisterMutation();
+  console.log(registernew);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: "",
@@ -32,7 +33,7 @@ export default function SignUp() {
     try {
       if (formData.password === formData.confirmPassword) {
         const { confirmPassword, ...data } = formData;
-        const response = await register(data);
+        const response = await registernew(data);
         setFormData({
           firstName: "",
           lastName: "",
@@ -40,9 +41,9 @@ export default function SignUp() {
           password: "",
           confirmPassword: "",
         });
-        navigate("/signIn");
+        navigate("/");
       } else {
-        console.log("Password and Confirm Password does not match!");
+        alert("Password and Confirm Password does not match!");
       }
     } catch (error) {
       console.log(error);
@@ -147,7 +148,7 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>

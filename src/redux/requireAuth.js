@@ -13,7 +13,6 @@ return  useSelector((state) => state.Employee.currentUser);
 export const RequireAuth = ({ children }) => {
   // const { activeUser, dispatch } = AuthConsumer();
   const user = ReduxConsumer();
-  console.log(user)
   const location = useLocation();
   // const role = activeUser?.user?.roleId;
 

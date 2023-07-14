@@ -13,13 +13,13 @@ import {
   getAllRTKEmployees,
   useGetAllRTKEmployeesQuery,
 } from "../../services/employee";
+import { useSelector } from "react-redux";
 
 export default function BasicTable() {
   const [rows, setRows] = useState([]);
   const responseInfo = useGetAllRTKEmployeesQuery();
-  console.log(responseInfo);
   const data = responseInfo?.currentData?.data;
-  console.log(data);
+  const { currentUser } = useSelector((state) => state.Employee);
   useEffect(() => {
     if (data) {
       setRows(data);
@@ -44,8 +44,12 @@ export default function BasicTable() {
             <TableCell align="right">Department</TableCell>
             <TableCell align="right">wstId</TableCell>
             <TableCell align="right">RoleId</TableCell>
-            <TableCell align="right">Edit</TableCell>
-            <TableCell align="right">Delete</TableCell>
+            {currentUser.roleId === 2 && (
+              <>
+                <TableCell align="right">Edit</TableCell>
+                <TableCell align="right">Delete</TableCell>
+              </>
+            )}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -66,12 +70,16 @@ export default function BasicTable() {
               <TableCell align="right">{row.dob}</TableCell>
               <TableCell align="right">{row.wstId}</TableCell>
               <TableCell align="right">{row.roleId}</TableCell>
-              <TableCell align="right">
-                <Button key={row.id}>Edit</Button>
-              </TableCell>
-              <TableCell align="right">
-                <Button key={row.id}>Delete</Button>
-              </TableCell>
+              {currentUser.roleId === 2 && (
+                <>
+                  <TableCell align="right">
+                    <Button key={row.id}>Edit</Button>
+                  </TableCell>
+                  <TableCell align="right">
+                    <Button key={row.id}>Delete</Button>
+                  </TableCell>
+                </>
+              )}
             </TableRow>
           ))}
         </TableBody>
