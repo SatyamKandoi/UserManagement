@@ -5,19 +5,23 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Provider } from "react-redux";
-import { store } from "./app/store"
-
-
+import { store } from "./app/store";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { newtheme } from "./components/assets/theme/theme";
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <Routes>
-          <Route path="/*" element={<App />}></Route>
-        </Routes>
+        <ThemeProvider theme={newtheme}>
+          <Routes>
+            <Route path="/*" element={<App />}></Route>
+          </Routes>
+        </ThemeProvider>
       </BrowserRouter>
     </Provider>
+    ;
   </React.StrictMode>
 );
 

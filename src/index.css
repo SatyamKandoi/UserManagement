@@ -11,6 +11,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.three{
+ display: grid;
+ grid-template-columns: auto auto auto;
+ column-gap: 5px;
+ 
+}
 .link-styles {
   color:white;
   text-decoration: none;
@@ -24,4 +30,9 @@ code {
 .profile{
   margin-top: 100px;
   margin-left: 300px;
+}
+.formstyle{
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
 }

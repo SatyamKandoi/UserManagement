@@ -33,7 +33,7 @@ export default function SignUp() {
     try {
       if (formData.password === formData.confirmPassword) {
         const { confirmPassword, ...data } = formData;
-        const response = await registernew(data);
+        const response = await registernew(data);  
         setFormData({
           firstName: "",
           lastName: "",

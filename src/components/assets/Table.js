@@ -6,32 +6,71 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import TablePagination from "@mui/material/TablePagination";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import {
   getAllRTKEmployees,
   useGetAllRTKEmployeesQuery,
 } from "../../services/employee";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setSelectedUser } from "../../redux/employeeSlice";
 
 export default function BasicTable() {
+  const [pg, setpg] = React.useState(0);
+  const [rpg, setrpg] = React.useState(5);
+
+  function handleChangePage(event, newpage) {
+    setpg(newpage);
+  }
+
+  function handleChangeRowsPerPage(event) {
+    setrpg(parseInt(event.target.value, 10));
+    setpg(0);
+  }
+
+  const navigate = useNavigate();
   const [rows, setRows] = useState([]);
+  // const handleclick = () => {
+  //   navigate("/dashboard/updateemp");
+  // };
   const responseInfo = useGetAllRTKEmployeesQuery();
   const data = responseInfo?.currentData?.data;
+  console.log(data);
   const { currentUser } = useSelector((state) => state.Employee);
+  const dispatch = useDispatch();
+
   useEffect(() => {
     if (data) {
       setRows(data);
     }
   }, [data]);
+  // const [selectedUser, setselectedUser] = useState({
+  //   firstName: "",
+  //   lastName: "",
+  //   email: "",
+  //   dob: currentUser?.dob
+  //     ? new Date(currentUser?.dob).toISOString().split("T")[0]
+  //     : "",
+  //   doj: new Date(currentUser?.doj).toISOString().split("T")[0],
+  //   department: "",
+  //   workStatus: "",
+  // });
+
+  // console.log(selectedUser);
 
   return (
     <TableContainer
       component={Paper}
-      sx={{ marginTop: 20, marginLeft: 5, width: 1500 }}
+      sx={{ marginTop: 10, marginLeft: 5, width: 1200 }}
     >
-      <Table sx={{ minWidth: 500 }} aria-label="simple table">
+      <Table
+        sx={{ minWidth: 500 }}
+        // exportButton={true}
+        aria-label="simple table"
+      >
         <TableHead>
           <TableRow>
             <TableCell>Id</TableCell>
@@ -53,7 +92,7 @@ export default function BasicTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows?.map((row) => (
+          {rows.slice(pg * rpg, pg * rpg + rpg)?.map((row) => (
             <TableRow
               key={row.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -66,14 +105,29 @@ export default function BasicTable() {
               <TableCell align="right">{row.email}</TableCell>
               <TableCell align="right">{row.gender}</TableCell>
               <TableCell align="right">{row.phone}</TableCell>
-              <TableCell align="right">{row.dob}</TableCell>
-              <TableCell align="right">{row.dob}</TableCell>
-              <TableCell align="right">{row.wstId}</TableCell>
-              <TableCell align="right">{row.roleId}</TableCell>
+              <TableCell align="right">
+                {new Date(currentUser?.dob).toISOString().split("T")[0]}
+              </TableCell>
+              <TableCell align="right">
+                {row?.department?.departmentName}
+              </TableCell>
+              <TableCell align="right">{row?.workStatus?.workState}</TableCell>
+
+              <TableCell align="right">{row?.roleId}</TableCell>
+
               {currentUser.roleId === 2 && (
                 <>
                   <TableCell align="right">
-                    <Button key={row.id}>Edit</Button>
+                    <Button
+                      key={row.id}
+                      onClick={() => {
+                        // setselectedUser(row);
+                        dispatch(setSelectedUser(row));
+                        navigate("/dashboard/updateemp");
+                      }}
+                    >
+                      Edit
+                    </Button>
                   </TableCell>
                   <TableCell align="right">
                     <Button key={row.id}>Delete</Button>
@@ -84,6 +138,16 @@ export default function BasicTable() {
           ))}
         </TableBody>
       </Table>
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25]}
+        component="div"
+        count={rows.length}
+        rowsPerPage={rpg}
+        page={pg}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+
     </TableContainer>
   );
 }

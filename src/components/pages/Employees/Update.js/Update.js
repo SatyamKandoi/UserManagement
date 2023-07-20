@@ -57,13 +57,12 @@ export default function Update() {
     formdata.doj = new Date(formdata.doj).toISOString();
     var current = currentAddress;
     var permenant = permanentAddress;
-
     var obj = {
       ...formdata,
       current,
       permenant,
     };
-    updateUser(obj)
+    updateUser(obj);
   };
 
   const handleChange = (event) => {
@@ -71,7 +70,6 @@ export default function Update() {
       return { ...formdata, [event.target.name]: event.target.value };
     });
   };
-
   const [formdata, setFormdata] = useState({
     firstName: currentUser?.firstName,
     lastName: currentUser?.lastName,
@@ -80,9 +78,10 @@ export default function Update() {
       ? new Date(currentUser?.dob).toISOString().split("T")[0]
       : "",
     doj: new Date(currentUser?.doj).toISOString().split("T")[0],
-    department: currentUser?.department.id,
+    deptId: currentUser?.department.id,
     workStatus: currentUser?.workStatus,
   });
+  console.log(formdata);
 
   useEffect(() => {
     setFormdata(formdata);
@@ -185,8 +184,8 @@ export default function Update() {
             <Select
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
-              name="department"
-              value={Department}
+              name="deptId"
+              value={formdata?.deptId}
               onChange={(e) => handleChange(e)}
             >
               <MenuItem value={0}>

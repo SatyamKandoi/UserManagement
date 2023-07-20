@@ -7,6 +7,7 @@ const initialState = {
   allEmployees: [],
   work:{},
   currentUser: {},
+  selectedUser: {},
 };
 export const employeeSlice = createSlice({
   name: "counter",
@@ -27,6 +28,9 @@ export const employeeSlice = createSlice({
     setCurrentUser: (state, action) => {
       state.currentUser = action.payload;
     },
+    setSelectedUser: (state, action) => {
+      state.selectedUser = action.payload;
+    },
     setDept: (state, action) => {
       state.Dept = action.payload;
     },
@@ -46,6 +50,7 @@ export const {
   setUserRole,
   setAllEmployees,
   setCurrentUser,
+  setSelectedUser
 } = employeeSlice.actions;
 
 export default employeeSlice.reducer;

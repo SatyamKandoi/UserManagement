@@ -3,29 +3,27 @@ import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
-import { useContext } from "react";
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import { Link } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import { Button } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
 import ListItem from "@mui/material/ListItem";
-import QueryStatsIcon from '@mui/icons-material/QueryStats';
+import QueryStatsIcon from "@mui/icons-material/QueryStats";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
-import BadgeIcon from '@mui/icons-material/Badge';
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import BadgeIcon from "@mui/icons-material/Badge";
 import { Outlet, useNavigate } from "react-router-dom";
-import Person2Icon from '@mui/icons-material/Person2';
+import Person2Icon from "@mui/icons-material/Person2";
 import { useDispatch } from "react-redux";
 import { setCurrentUser } from "../../../redux/employeeSlice";
 import { useLogoutMutation } from "../../../services/employee";
-
+import SecurityIcon from "@mui/icons-material/Security";
+import FormatPaintIcon from "@mui/icons-material/FormatPaint";
 const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
@@ -78,7 +76,7 @@ const defaultTheme = createTheme();
 export default function Dashboard() {
   const navigate = useNavigate();
   const [logoutnew] = useLogoutMutation();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -86,8 +84,8 @@ export default function Dashboard() {
   const Logout = async () => {
     try {
       const result = await logoutnew();
-      console.log(result)
-      dispatch(setCurrentUser(null))
+      console.log(result);
+      dispatch(setCurrentUser(null));
       navigate("/signin");
     } catch (error) {
       console.log(error);
@@ -103,6 +101,7 @@ export default function Dashboard() {
               pr: "24px", // keep right padding when drawer closed
             }}
           >
+           
             <IconButton
               edge="start"
               color="inherit"
@@ -121,15 +120,9 @@ export default function Dashboard() {
               color="inherit"
               noWrap
               sx={{ flexGrow: 1 }}
-            >
-              <Link  className="link-styles"to="/dashboard">
+            ></Typography>
 
-              Dashboard
-              </Link>
-
-            
-            </Typography>
-
+              <FormatPaintIcon sx={{marginRight:"20px"}}/>
             <Badge badgeContent={0} color="secondary">
               <Button
                 sx={{
@@ -140,7 +133,6 @@ export default function Dashboard() {
                   },
                 }}
                 onClick={Logout}
-
               >
                 LogOut
               </Button>
@@ -153,111 +145,119 @@ export default function Dashboard() {
             sx={{
               display: "flex",
               alignItems: "center",
-              justifyContent: "flex-end",
-              px: [1],
+              backgroundColor: "#1976d2",
             }}
           >
-            <IconButton onClick={toggleDrawer}>
-              <ChevronLeftIcon />
+            <div style={{ display: "flex" }}>
+              <MenuIcon onClick={toggleDrawer} style={{ color: "white" }} />
+              <SecurityIcon style={{ color: "white", marginLeft: "12px" }} />
               <Typography
+                component="h1"
+                variant="h6"
+                color="white"
                 noWrap
-                component="a"
-                sx={{
-                  ml: 2,
-                  display: { xs: "flex", md: "flex" },
-                  fontFamily: "justSans",
-                  fontWeight: 500,
-                  color: "inherit",
-                  textDecoration: "none",
-                }}
+                marginLeft="10px"
+                sx={{ flexGrow: 1 }}
               >
-                CELTIC
+                {" "}
+                Jury
               </Typography>
-            </IconButton>
+            </div>
           </Toolbar>
 
           <Divider />
-          <ListItem
-            disablePadding
-            sx={{ display: "block" }}
-            onClick={() => {
-              navigate("/dashboard/stats");
+          <div
+            style={{
+              height: "100vh",
+              backgroundColor: "#333333",
+              color: "white",
             }}
           >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2.5,
+            <ListItem
+              disablePadding
+              sx={{ display: "block" }}
+              onClick={() => {
+                navigate("/dashboard/stats");
               }}
             >
-              <ListItemIcon
+              <ListItemButton
                 sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
+                  minHeight: 48,
+                  justifyContent: open ? "initial" : "center",
+                  px: 2.5,
                 }}
               >
-                <QueryStatsIcon />
-              </ListItemIcon>
-              <ListItemText primary="Stats" sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
-          </ListItem>
-          <ListItem
-            disablePadding
-            sx={{ display: "block" }}
-            onClick={() => {
-              navigate("/dashboard/employees");
-            }}
-          >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2.5,
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : "auto",
+                    justifyContent: "center",
+                  }}
+                >
+                  <QueryStatsIcon style={{ color: "white" }} />
+                </ListItemIcon>
+                <ListItemText primary="Stats" sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </ListItem>
+            <ListItem
+              disablePadding
+              sx={{ display: "block" }}
+              onClick={() => {
+                navigate("/dashboard/employees");
               }}
             >
-              <ListItemIcon
+              <ListItemButton
                 sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
+                  minHeight: 48,
+                  justifyContent: open ? "initial" : "center",
+                  px: 2.5,
                 }}
               >
-                <BadgeIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary="Employees"
-                sx={{ opacity: open ? 1 : 0 }}
-              />
-            </ListItemButton>
-          </ListItem>
-          <ListItem
-            disablePadding
-            sx={{ display: "block" }}
-            onClick={() => {
-              navigate("/dashboard/update");
-            }}
-          >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2.5,
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : "auto",
+                    justifyContent: "center",
+                  }}
+                >
+                  <BadgeIcon style={{ color: "white" }} />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Employees"
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
+              </ListItemButton>
+            </ListItem>
+            <ListItem
+              disablePadding
+              sx={{ display: "block" }}
+              onClick={() => {
+                navigate("/dashboard/update");
               }}
             >
-              <ListItemIcon
+              <ListItemButton
                 sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
+                  minHeight: 48,
+                  justifyContent: open ? "initial" : "center",
+                  px: 2.5,
                 }}
               >
-                <Person2Icon/>
-              </ListItemIcon>
-              <ListItemText primary="Update Profile" sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
-          </ListItem>
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : "auto",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Person2Icon style={{ color: "white" }} />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Update Profile"
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
+              </ListItemButton>
+            </ListItem>
+          </div>
         </Drawer>
         <Box
           component="main"
@@ -271,8 +271,9 @@ export default function Dashboard() {
             overflow: "auto",
           }}
         >
-          <div style={{marginTop:100}}>
-          <Outlet />
+          <div style={{ marginTop: 100 }}>
+            
+            <Outlet />
           </div>
         </Box>
       </Box>

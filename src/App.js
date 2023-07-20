@@ -9,6 +9,9 @@ import { RequireAuth } from "./redux/requireAuth";
 import Employees from "./components/pages/Employees/Employees";
 import Update from "./components/pages/Employees/Update.js/Update";
 import Unauthenticated from './components/assets/Unauthenticated';
+import FrameCard from "./components/assets/FrameCard";
+import UpdateAdmin from "./components/pages/Employees/Update Admin/UpdateAdmin";
+
 const App = () => {
   const routes = useRoutes([
     {
@@ -43,6 +46,10 @@ const App = () => {
         {
           path:"/dashboard/update",
           element:<Update/>
+        },
+        {
+          path:"/dashboard/updateemp",
+          element:<UpdateAdmin/>
         }
       ],
     },
@@ -50,22 +57,6 @@ const App = () => {
       path: "/*",
       element: <Unauthenticated />,
     },
-
-    // {
-    //   path:"/home",
-    //   element:<RequireAuth><Home/></RequireAuth>,
-    //   children:[
-    //     {
-    //     index:true,
-    //     element:<Greetings></Greetings>
-    //     },
-    //     {
-    //       path: '/profile',
-    //       element: <RequireAuth><Profile /></RequireAuth>
-    //     },
-
-    //   ]
-    // }
   ]);
 
   return routes;
