@@ -1,5 +1,5 @@
 import React from 'react'
-import Table from "../../assets/Table"
+import Table from "../../components/assets/Table"
 const Employees = () => {
   return (
     <div>

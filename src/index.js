@@ -7,22 +7,29 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./app/store";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { newtheme } from "./components/assets/theme/theme";
+import { newtheme } from "./components/assets/theme";
+import { PersistGate } from "redux-persist/integration/react";
+import { persistStore } from "redux-persist";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
+let persistor = persistStore(store);
+
 root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <ThemeProvider theme={newtheme}>
-          <Routes>
-            <Route path="/*" element={<App />}></Route>
-          </Routes>
-        </ThemeProvider>
-      </BrowserRouter>
-    </Provider>
-    ;
-  </React.StrictMode>
+    <React.StrictMode>
+        <Provider store={store}>
+            <PersistGate persistor={persistor}>
+                <BrowserRouter>
+                    <ThemeProvider theme={newtheme}>
+                        <Routes>
+                            <Route path="/*" element={<App />}></Route>
+                        </Routes>
+                    </ThemeProvider>
+                </BrowserRouter>
+            </PersistGate>
+        </Provider>
+        ;
+    </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
